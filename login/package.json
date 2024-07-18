@@ -1,0 +1,27 @@
+{
+  "export": "npm run build && next export -o _static",
+  "name": "login",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@azure/msal-browser": "^3.18.0",
+    "@azure/msal-react": "^2.0.20",
+    "@material-tailwind/react": "^2.1.9",
+    "next": "14.2.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-infinite-scroll-component": "^6.1.0",
+    "react-loading-skeleton": "^3.4.0",
+    "react-toastify": "^10.0.5"
+  },
+  "devDependencies": {
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1"
+  }
+}

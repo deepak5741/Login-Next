@@ -1,0 +1,185 @@
+"use client"
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+
+const LoginPage = () => {
+  const router = useRouter();
+  const [errorObj, setErrorObj] = useState({});
+  const [username, setUserName] = useState('');
+  const [showPass, setshowPass] = useState(false);
+  const [userPass, setUserPass] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [passwordCriteria, setPasswordCriteria] = useState({
+    length: false,
+    lowercase: false,
+    uppercase: false,
+    number: false,
+    specialChar: false,
+  });
+
+  const validatePassword = (password) => {
+    setPasswordCriteria({
+      length: password.length >= 8,
+      lowercase: /[a-z]/.test(password),
+      uppercase: /[A-Z]/.test(password),
+      number: /[0-9]/.test(password),
+      specialChar: /[!@#$%^&*()]/.test(password),
+    });
+  };
+
+  const handlePasswordChange = (e) => {
+    const { value } = e.target;
+    setUserPass(value);
+    validatePassword(value);
+  };
+  
+
+  const loginUser = (event) => {
+    event.preventDefault();
+    let error = {}
+    let valid = true;
+    if (!username) {
+      error.name = 'This field is required'
+      valid = false;
+    } else if(!userPass) {
+      error.pass = ' This field is required'
+      valid = false;
+    }
+    if (!valid) {
+      setErrorObj(error)
+      return
+    }
+    const validationErrors = [];
+const { length, lowercase, uppercase, number, specialChar } = passwordCriteria;
+    // if (!length || !lowercase || !uppercase || !number || !specialChar) {
+    //   validationErrors.push('Password does not meet the required criteria.');
+    // }
+    if(!username){
+      return
+    }
+    if (validationErrors.length > 0) {
+      setErrorMessage(validationErrors.join('\n'));
+      return;
+    }
+    localStorage.setItem('UserId', username)
+    localStorage.setItem('UserPassword', userPass)
+    router.push('/thankyou');
+    setUserPass('');
+    setUserName('')
+    setErrorMessage('');
+    // let error = {}
+    // let valid = true;
+    // if (!username) {
+    //   error.name = 'This field is required'
+    //   valid = false;
+    // } else {
+    //   error.pass = ' This field is required'
+    //   valid = false;
+    // }
+    // if (!valid) {
+    //   setErrorObj(error)
+    //   return
+    // }
+
+  }
+  return (
+    <div className="login-container flex min-h-screen justify-center items-center px-4">
+      <div className="login-form bg-white shadow-md rounded-lg p-8 max-w-md w-full flex flex-col">
+        <div className="flex items-center justify-between">
+          <img src="https://onmeridian.com/wp-content/uploads/2023/06/Meridian-logo-blue-1024x288.png" alt="Company Logo" className="w-15 h-6 mr-4" />
+          <h1 className="text-2xl font-bold text-center">Sign in to KidsChaupal</h1>
+        </div>
+        <p className="text-gray-500 text-center mb-8">Enter your details below</p>
+        <form className="flex flex-col gap-4" action="/api/login" method="post">
+          <label htmlFor="login" className="text-sm font-medium">
+            +91 Email / Username / Phone
+          </label>
+          <input
+            type="text"
+            id="login"
+            name="login"
+            required
+            placeholder="+91 Email / Username / Phone"
+            className="rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-black"
+            value={username}
+            onChange={() => {
+              setUserName(event.target.value)
+            }}
+          />
+      {errorObj.name && (
+      <span className="text-red-500 text-sm"><small>{errorObj.name}</small></span>
+    )}
+          <label htmlFor="password" className="text-sm font-medium">
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            value={userPass}
+            onChange={handlePasswordChange}
+            placeholder="Password"
+            className="rounded-md border border-gray-300 p-2  focus:outline-none focus:ring-2 focus:ring-indigo-500 text-black"
+          />
+          <p onClick={() =>{
+            if(showPass){
+              setshowPass(false)
+            }else{
+              setshowPass(true)
+            }
+          }} >EYE</p>
+
+         {errorObj.pass && !userPass && (
+      <span className="text-red-500 text-sm"><small>{errorObj.pass}</small></span>
+    )}
+          {userPass && (
+            <div className="text-gray-500 text-sm mt-2">
+              <p className={passwordCriteria.length ? 'text-green-500' : 'text-red-500'}>&#x2714; At least 8 characters</p>
+              <p className={passwordCriteria.lowercase ? 'text-green-500' : 'text-red-500'}>&#x2714; Lowercase letter</p>
+              <p className={passwordCriteria.uppercase ? 'text-green-500' : 'text-red-500'}>&#x2714; Uppercase letter</p>
+              <p className={passwordCriteria.number ? 'text-green-500' : 'text-red-500'}>&#x2714; Number</p>
+              <p className={passwordCriteria.specialChar ? 'text-green-500' : 'text-red-500'}>&#x2714; Special character</p>
+            </div>
+          )}
+          {errorMessage && (
+            <div className="text-red-500 text-sm mt-2">
+              {errorMessage.split('\n').map((msg, idx) => (
+                <p key={idx}>{msg}</p>
+              ))}
+            </div>
+          )}
+          <button onClick={loginUser} type="submit" className="bg-indigo-600 text-white rounded-md p-2 hover:bg-indigo-700">
+            Login
+          </button>
+          {/* <a href="/forgot-password" className="text-indigo-600 hover:underline">
+    Forgot Password?
+  </a> */}
+        </form>
+
+
+
+
+        <b className="text-gray-500 text-center mb-2 mt-2" >OR</b>
+        <button type="button" className="flex items-center justify-center border bg-light-600 text-white rounded-md p-2 hover:bg-indigo-700">
+          <i className="fab fa-google text-red-500 text-center mr-2"></i>
+          <img className="w-15 h-6" src="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31" />
+        </button>
+
+
+
+        <div className="flex items-center justify-center mt-6">
+          <p className="text-gray-500 text-sm mr-2">Don't have an account?</p>
+          <a href="/signup" className="text-indigo-600 hover:underline">
+            Sign Up
+          </a>
+        </div>
+        <p className="text-gray-500 text-center text-sm mt-4">
+          By continuing, you agree to our Privacy Policy and terms of use
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default LoginPage;
