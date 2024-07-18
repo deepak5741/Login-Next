@@ -75,7 +75,7 @@ function Page() {
         loader={
           <div className='grid gap-x-8 gap-y-4 grid-cols-4 p-3'>
             {Array.from({ length: 4 }).map((_, index) => (
-              <Card className="mt-6 w-50 transition-shadow duration-300 ease-in-out hover:shadow-lg" key={index}>
+              <Card className="mt-6 w-50 transition-shadow duration-300 ease-in-out hover:shadow-lg rounded-" key={index}>
                 <CardHeader color="blue-gray" className="relative h-56">
                   <Skeleton height="100%" width="100%" />
                 </CardHeader>
@@ -97,19 +97,20 @@ function Page() {
       >
         <div className='grid gap-x-8 gap-y-4 grid-cols-4 p-3'>
           {starList.length > 0 && starList.map((star, index) => (
-            <Card className={`mt-6 w-50 transition-shadow duration-300 ease-in-out hover:shadow-lg ${getColorClass(star.skin_color)} `} key={index}
+            <Card className={`mt-6 w-50 transition-shadow duration-300 ease-in-out hover:shadow-lg rounded-lg cursor-pointer ${getColorClass(star.skin_color)} `} key={index}
             onClick={() =>{
               const encodedName = encodeURIComponent(star.name);
               router.push('/star-wars/'+encodedName)
             }} 
             >
-              <CardHeader color="blue-gray" className="relative h-56">
+              <CardHeader color="blue-gray" className="relative h-56 rounded-full">
                 <img
                   src={imgUrl + (index * 100)}
-                  alt="card-image"
+                  alt="card-image rounded-lg"
+                  loading='lazy'
                 />
               </CardHeader>
-              <CardBody>
+              <CardBody className='text-center' >
                 <Typography variant="h5" color="blue-gray text-center" className="mb-2">
                   {star.name}
                 </Typography>

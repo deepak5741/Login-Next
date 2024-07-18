@@ -74,9 +74,9 @@ const CharacterDetails = ({ params }) => {
     <>
       <Header />
       {starData && (
-        <h1 className='text-black text-center mt-5'>{starData.name}</h1>
+        <h1 className='text-black text-center mt-2 font-bold  text-3xl'>{starData.name}</h1>
       )}
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen text-black shadow rounded-lg ">
         {loading ? (
           <div className="w-full max-w-[90%] flex-row">
             <Skeleton height={300} width="100%" />
@@ -102,8 +102,8 @@ const CharacterDetails = ({ params }) => {
                 />
               </CardHeader>
               <CardBody>
-  <div className="flex flex-col justify-between  ">
-    <div className="flex">
+  <div className="m4 grid grid-col-2 gap-4 ml-4 ">
+    <div className="flex ">
       <Typography variant="h6" color="gray" className="uppercase">
         Height: 
       </Typography>
